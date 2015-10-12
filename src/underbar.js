@@ -105,6 +105,18 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    var returnedArr = [];
+    var sortedArr = array.slice().sort(function (a, b) {
+      return a - b;
+    });
+
+    _.each(sortedArr, function(element) {
+      if (_.indexOf(returnedArr, element) === -1) {
+        returnedArr.push(element);
+      }
+    })
+
+    return returnedArr;
   };
 
 
