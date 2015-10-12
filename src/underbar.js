@@ -183,21 +183,24 @@
       });
     }
     else {
+      // collectrix will be copy of collection without collection's first item
       var collectrix;
 
+      // if collection is array, clone it and shift the first element
       if (Array.isArray(collection)) {
         collectrix = collection.slice();
         accumulatrix = collectrix.shift();
       }
+      // if collection is another object, identify first key/value pair...
       else {
         collectrix = {};
-        //http://stackoverflow.com/a/17579861
+        // http://stackoverflow.com/a/17579861
         var firstKey = Object.keys(collection)[0];
         accumulatrix = collection[firstKey];
 
         for (var prop in collection) {
+          // ...then make a shallow copy without the first key/value pair
           if (prop != firstKey) {
-            //this is a shallow copy
             collectrix[prop] = collection[prop];
           }
         }
