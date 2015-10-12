@@ -173,6 +173,23 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    var accumulatrix;
+    var argues = Array.prototype.slice.call(arguments);
+   
+    if (argues.length === 2) {
+      //placeholder
+      accumulatrix = 0;
+
+    }
+    else if (argues.length === 3) {
+      accumulatrix = accumulator;
+
+      _.each(collection, function(item) {
+        accumulatrix = iterator(accumulatrix, item);
+      });
+    }
+
+    return accumulatrix;
   };
 
   // Determine if the array or object contains a given value (using `===`).
