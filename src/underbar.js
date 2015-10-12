@@ -174,17 +174,36 @@
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
     var accumulatrix;
-    var argues = Array.prototype.slice.call(arguments);
    
-    if (argues.length === 2) {
-      //placeholder
-      accumulatrix = 0;
-
-    }
-    else if (argues.length === 3) {
+    if (arguments[2] != undefined) {
       accumulatrix = accumulator;
 
       _.each(collection, function(item) {
+        accumulatrix = iterator(accumulatrix, item);
+      });
+    }
+    else {
+      var collectrix;
+
+      if (Array.isArray(collection)) {
+        collectrix = collection.slice();
+        accumulatrix = collectrix.shift();
+      }
+      else {
+        collectrix = {};
+        //http://stackoverflow.com/a/17579861
+        var firstKey = Object.keys(collection)[0];
+        accumulatrix = collection[firstKey];
+
+        for (var prop in collection) {
+          if (prop != firstKey) {
+            //this is a shallow copy
+            collectrix[prop] = collection[prop];
+          }
+        }
+      }
+
+      _.each(collectrix, function(item) {
         accumulatrix = iterator(accumulatrix, item);
       });
     }
