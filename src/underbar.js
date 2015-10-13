@@ -233,7 +233,7 @@
     if (!arguments[1]) {
       iterator = _.identity;
     }
-    
+
     return _.reduce(collection, function(passedIterator, item) {
       if (!passedIterator) {
         return false;
@@ -246,6 +246,20 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    if (!arguments[1]) {
+      iterator = _.identity;
+    }
+    /* if at least one element passes a truth test, 
+    then that means if we run the obverse test,
+    at least one element will fail this new test */
+
+    // obverse test
+    var obversIterator = function(item) {
+      return !iterator(item);
+    }
+
+    // check to see if all elements pass obverse test
+    return !_.every(collection, obversIterator);
   };
 
 
