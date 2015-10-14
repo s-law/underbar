@@ -350,6 +350,34 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var seenArgsArr = [], results = [];
+
+    return function() {
+      var args = Array.prototype.slice.call(arguments);
+      var idx, flagMatch = true;
+
+      for (var i = 0; i < seenArgsArr.length; i++) {
+        if (args.length === seenArgsArr[i].length) {
+          for (var j = 0; j < args.length; j++) {
+            if (args[j] !== seenArgsArr[i][j]) {
+              flagMatch = false;
+            }
+          }
+        }
+        if (flagMatch) {
+          idx = i;
+          flagMatch = false;
+        }
+      }
+
+      if (idx == undefined ) {
+        results.push(func.apply(this, arguments));
+        seenArgsArr.push(args);
+        idx = results.length - 1;
+      }
+      
+      return results[idx];
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
