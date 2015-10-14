@@ -288,7 +288,7 @@
       for (var prop in arg) {
         args[0][prop] = arg[prop];
       }
-    })
+    });
 
     return args[0];
   };
