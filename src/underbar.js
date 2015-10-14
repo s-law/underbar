@@ -284,7 +284,7 @@
   _.extend = function(obj) {
     var args = Array.prototype.slice.call(arguments);
 
-    _.reduce(args, function(a, arg) {
+    _.each(args, function(arg) {
       for (var prop in arg) {
         args[0][prop] = arg[prop];
       }
@@ -298,7 +298,7 @@
   _.defaults = function(obj) {
     var args = Array.prototype.slice.call(arguments);
 
-    _.reduce(args, function(a, arg) {
+    _.each(args, function(arg) {
       for (var prop in arg) {
         if (args[0][prop] === undefined) {
           args[0][prop] = arg[prop];
@@ -375,7 +375,7 @@
         seenArgsArr.push(args);
         idx = results.length - 1;
       }
-      
+
       return results[idx];
     }
   };
