@@ -387,6 +387,16 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = Array.prototype.slice.call(arguments);
+    var deadline = new Date().getTime();
+
+    deadline += wait;
+
+    while (new Date().getTime() < deadline) {
+      // this line is intentionally left blank
+    }
+
+    func.apply(this, args.slice(2,args.length));
   };
 
 
