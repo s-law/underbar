@@ -296,6 +296,17 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var args = Array.prototype.slice.call(arguments);
+
+    _.reduce(args, function(a, arg) {
+      for (var prop in arg) {
+        if (args[0][prop] === undefined) {
+          args[0][prop] = arg[prop];
+        }
+      }
+    });
+
+    return args[0];
   };
 
 
