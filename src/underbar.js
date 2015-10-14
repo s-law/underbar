@@ -388,6 +388,9 @@
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
     var args = Array.prototype.slice.call(arguments);
+
+    //timing code temporarily disabled
+    /*
     var deadline = new Date().getTime();
 
     deadline += wait;
@@ -395,6 +398,7 @@
     while (new Date().getTime() < deadline) {
       // this line is intentionally left blank
     }
+    */
 
     func.apply(this, args.slice(2,args.length));
   };
@@ -411,6 +415,15 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var clonedArr = array.slice(), returnedArr = [];
+
+    while (returnedArr.length < array.length) {
+      var idx = Math.floor(Math.random()*(clonedArr.length));
+      returnedArr.push(clonedArr[idx]);
+      clonedArr = clonedArr.slice(0, idx).concat(clonedArr.slice(idx + 1, clonedArr.length));
+    }
+
+    return returnedArr;
   };
 
 
