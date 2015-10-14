@@ -282,6 +282,15 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var args = Array.prototype.slice.call(arguments);
+
+    _.reduce(args, function(a, arg) {
+      for (var prop in arg) {
+        args[0][prop] = arg[prop];
+      }
+    })
+
+    return args[0];
   };
 
   // Like extend, but doesn't ever overwrite a key that already
