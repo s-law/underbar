@@ -389,18 +389,9 @@
   _.delay = function(func, wait) {
     var args = Array.prototype.slice.call(arguments);
 
-    //timing code temporarily disabled
-    /*
-    var deadline = new Date().getTime();
-
-    deadline += wait;
-
-    while (new Date().getTime() < deadline) {
-      // this line is intentionally left blank
-    }
-    */
-
-    func.apply(this, args.slice(2,args.length));
+    setTimeout(function() {
+      func.apply(this, args.slice(2,args.length));
+    }, wait);
   };
 
 
