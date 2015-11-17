@@ -559,6 +559,16 @@
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    // make copy of initial array for manipulation
+    var firstArr = array.slice();
+    // make array of arguments that is a flat array (flatArgsArr)
+    // convert flat array to a new array containing only unique elements (flatUniqArgsArr)
+    var flatUniqArgsArr = _.uniq(_.flatten(Array.prototype.slice.call(arguments, 1)));
+    // filter copy of initial array to not include any elements from array containing unique elements
+    // return filtered array
+    return _.filter(firstArr, function(elem) {
+      return !_.contains(flatUniqArgsArr, elem)
+    })
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
