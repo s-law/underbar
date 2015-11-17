@@ -531,6 +531,29 @@
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+    // store all arguments in a usable object
+    var args = Array.prototype.slice.call(arguments);
+    // create object to track all the elements
+    var countAppearances = {};
+    // iterate over all the arguments...
+    _.each(arguments, function(arr){
+      // to iterate over the elements of each array...
+      _.each(arr, function(elem){
+        // so that we either initialize the counter for an element, or we increment it
+        countAppearances[elem] = (countAppearances[elem]) ? countAppearances[elem] + 1 : 1;
+      });
+    });
+    // create an array to hold all shared elements
+    var intersectArr = [];
+    // go through tracking object and examine occurences
+    _.each(countAppearances, function(count, key) {
+      // if it occurred as often as there are arrays...
+      if (count === args.length) {
+        // we know all arrays had value
+        intersectArr.push(key);
+      }
+    });
+    return intersectArr;
   };
 
   // Take the difference between one array and a number of other arrays.
