@@ -432,6 +432,48 @@
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    // populate array called selectedPropertyArr by invoking iterator on collection 
+    var selectedPropertyArr;
+    var objValuePairArr = [];
+
+    // populate new array with either property of collection items or value produced by iterating over collection items
+    if (typeof iterator === 'function') {
+      selectedPropertyArr = _.map(collection, iterator);
+    } else {
+      selectedPropertyArr = _.map(collection, function(item) {
+        return item[iterator];
+      });
+    }
+
+    var i = 0;
+    // iterate over selectedPropertyArr to create new array objValuePairArr populated by original collection items and values of selectedPropertyArr
+    _.each(collection, function(element) {
+      objValuePairArr.push({ogCollectionItem: element, selProp: selectedPropertyArr[i]});
+      i++;
+    });
+
+    // filter out objects with undefined values into new array
+    var undefObjValuesArr = _.filter(objValuePairArr, function(item) {
+      return item.selProp === undefined;
+    })
+
+    // filter out objects with defined values in new array
+    var defObjValuesArr = _.filter(objValuePairArr, function(item) {
+      return item.selProp != undefined;
+    })
+
+    // sort on defined value array by selected property
+    defObjValuesArr.sort(function(a, b) {
+      return a.selProp - b.selProp;
+    });
+    
+    // tack undefined value array onto the end of the sorted array
+    objValuePairArr = defObjValuesArr.concat(undefObjValuesArr);
+
+    // return "map over sortedArr to pull out original collection items"
+    return _.map(objValuePairArr, function(obj) {
+      return obj.ogCollectionItem;
+    });
   };
 
   // Zip together two or more arrays with elements of the same index
