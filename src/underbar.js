@@ -350,33 +350,17 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    var seenArgsArr = [], results = [];
+    var argsObj = {};
 
     return function() {
-      var args = Array.prototype.slice.call(arguments);
-      var idx, flagMatch = true;
+      var args = Array.prototype.slice.call(arguments);      
+      var argsObjKey = args.join(',');
 
-      for (var i = 0; i < seenArgsArr.length; i++) {
-        if (args.length === seenArgsArr[i].length) {
-          for (var j = 0; j < args.length; j++) {
-            if (args[j] !== seenArgsArr[i][j]) {
-              flagMatch = false;
-            }
-          }
-        }
-        if (flagMatch) {
-          idx = i;
-          flagMatch = false;
-        }
+      if (argsObj[argsObjKey] === undefined) {
+        argsObj[argsObjKey] = func.apply(this, arguments);
       }
 
-      if (idx == undefined ) {
-        results.push(func.apply(this, arguments));
-        seenArgsArr.push(args);
-        idx = results.length - 1;
-      }
-
-      return results[idx];
+      return argsObj[argsObjKey];
     }
   };
 
