@@ -577,5 +577,26 @@
   //
   // Note: This is difficult! It may take a while to implement.
   _.throttle = function(func, wait) {
+    // result variable for storing function call
+    var result;
+    // prevCalled set intiionally to false
+    var hasBeenCalled = false;
+    // create variable prevTimeCalled set to undefined
+    var prevTimeCalled;
+    
+    var throttledFunc = function() {
+      var currTime = new Date().getTime();
+      if (prevTimeCalled + wait < currTime) {
+        hasBeenCalled = false;
+      } 
+      if (!hasBeenCalled) {
+        result = func.apply(null, arguments);
+        prevTimeCalled = currTime;
+        hasBeenCalled = true;
+      }
+      return result;
+    }
+    return throttledFunc;
   };
+
 }());
