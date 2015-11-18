@@ -390,13 +390,25 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
-    var clonedArr = array.slice(), returnedArr = [];
+    var clonedArr = array.slice();
+    var returnedArr;
 
-    while (returnedArr.length < array.length) {
-      var idx = Math.floor(Math.random()*(clonedArr.length));
-      returnedArr.push(clonedArr[idx]);
-      clonedArr = clonedArr.slice(0, idx).concat(clonedArr.slice(idx + 1, clonedArr.length));
-    }
+    do {
+      // make sure that results array is empty
+      returnedArr = [];
+
+      // if results array is shorter than original array, we're not done
+      while (returnedArr.length < array.length) {
+        // randomly pick an index
+        var idx = Math.floor(Math.random()*(clonedArr.length));
+        // move element at the copied array's indexed element to results array
+        returnedArr.push(clonedArr[idx]);
+        // re-form copied array without moved element
+        clonedArr = clonedArr.slice(0, idx).concat(clonedArr.slice(idx + 1, clonedArr.length));
+      }
+      // reset copy of initial array in case we need to do this again
+      clonedArr = array.slice();
+    } while (array.join(',') === returnedArr.join(',')); // compare original and results arrays; if they're the same, restart
 
     return returnedArr;
   };
