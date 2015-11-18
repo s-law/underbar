@@ -173,45 +173,18 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    var accumulatrix;
-   
-    if (arguments[2] != undefined) {
-      accumulatrix = accumulator;
+    var noAccum = arguments[2] === undefined;
 
-      _.each(collection, function(item) {
-        accumulatrix = iterator(accumulatrix, item);
-      });
-    }
-    else {
-      // collectrix will be copy of collection without collection's first item
-      var collectrix;
-
-      // if collection is array, clone it and shift the first element
-      if (Array.isArray(collection)) {
-        collectrix = collection.slice();
-        accumulatrix = collectrix.shift();
+    _.each(collection, function(item) {
+      if (noAccum) {
+        accumulator = item;
+        noAccum = false;
+      } else {
+        accumulator = iterator(accumulator, item);
       }
-      // if collection is another object, identify first key/value pair...
-      else {
-        collectrix = {};
-        // http://stackoverflow.com/a/17579861
-        var firstKey = Object.keys(collection)[0];
-        accumulatrix = collection[firstKey];
+    });
 
-        for (var prop in collection) {
-          // ...then make a shallow copy without the first key/value pair
-          if (prop != firstKey) {
-            collectrix[prop] = collection[prop];
-          }
-        }
-      }
-
-      _.each(collectrix, function(item) {
-        accumulatrix = iterator(accumulatrix, item);
-      });
-    }
-
-    return accumulatrix;
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
