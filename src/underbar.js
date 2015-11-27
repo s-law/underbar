@@ -273,7 +273,7 @@
 
     _.each(args, function(arg) {
       for (var prop in arg) {
-        if (args[0][prop] === undefined) {
+        if (args[0].hasOwnProperty(prop) === false) {
           args[0][prop] = arg[prop];
         }
       }
